@@ -9,7 +9,7 @@ var roundScore = 0;
 
 // шооны аль талаараа буусныг хадгалах хувьсагч 1-6 гэсэн утгыг санамсаргүйгээр үүсгэж өгнө
 // 1-6 хүртэлхи тооноос тохиолдлын тоог гаргаж авья
-var dice = Math.floor(Math.random() * 6) + 1;
+var diceNumber = Math.floor(Math.random() * 6) + 1;
 
 // <div class="player-score" id="score-0">43</div>
 // window dotorhi document iin querySelector oor html dotorhi yamr ng function iig holbono uun dotorhi textContent duudaj tuhain uguh gsen utgaa ugnu doorhi maygaar
@@ -22,12 +22,13 @@ var dice = Math.floor(Math.random() * 6) + 1;
 
 // одоо шооны утга харуулсан зургийг style display руу ороод none утга өгөхөд алга болно
 
-// Програм эхлэхэд бэлтгэе
-window.document.querySelector("#score-0").textContent = 0;
-window.document.querySelector("#score-1").textContent = 0;
-document.querySelector(".dice").style.display = "none";
-window.document.querySelector("#current-0").textContent = 0;
-window.document.querySelector("#current-1").textContent = 0;
+// Програм эхлэхэд бэлтгэе хэрэв ID аар  нь файлыг сонгосон байвал querySelector ийн оронд getElelmentById ийг оруулж болно гэхдээ id нэрээ # гүйгээр бичнэ
+window.document.getElementById("score-0").textContent = 0;
+window.document.getElementById("score-1").textContent = 0;
+window.document.getElementById("current-0").textContent = 0;
+window.document.getElementById("current-1").textContent = 0;
+
+window.document.querySelector(".dice").style.display = "none";
 
 /*одоо доорхи дарааллаар явья
 1.Roll Dice товчийг DOM оос авна
@@ -37,5 +38,12 @@ window.document.querySelector("#current-1").textContent = 0;
 3.2. DOM оос шооны зургийн обьектийг авна
 3.3. уг обьектийг вэб дээр харагддаг болгоно
 3.4. уг обьектийн зургийг өөрчилнө */
-
-console.log("Шоо : " + dice);
+var diceDom = window.document.querySelector(".dice");
+window.document
+  .querySelector(".btn-roll")
+  .addEventListener("click", function () {
+    var diceNumber = Math.floor(Math.random() * 6) + 1;
+    /*diceNumber т харгалзах зургийг холбоё */
+    diceDom.src = "dice-" + diceNumber + ".png";
+    diceDom.style.display = "block";
+  });
