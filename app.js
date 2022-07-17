@@ -38,12 +38,11 @@ window.document.querySelector(".dice").style.display = "none";
 3.2. DOM оос шооны зургийн обьектийг авна
 3.3. уг обьектийг вэб дээр харагддаг болгоно
 3.4. уг обьектийн зургийг өөрчилнө */
+/*addEventListener ( event iin ner, event bolohod yamr үйлдэл хийх функц байна) */
 var diceDom = window.document.querySelector(".dice");
-window.document
-  .querySelector(".btn-roll")
-  .addEventListener("click", function () {
-    var diceNumber = Math.floor(Math.random() * 6) + 1;
-    /*diceNumber т харгалзах зургийг холбоё */
-    diceDom.src = "dice-" + diceNumber + ".png";
-    diceDom.style.display = "block";
-  });
+document.querySelector(".btn-roll").addEventListener("click", function () {
+  var diceNumber = Math.floor(Math.random() * 6) + 1;
+  diceDom.style.display = "block";
+  diceDom.src = "dice-" + diceNumber + ".png";
+  alert("шоо буулаа : " + diceNumber);
+});
