@@ -73,7 +73,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
   document.getElementById("score-" + activePlayer).textContent =
     scores[activePlayer];
   //аль  тоглогч хожсоныг илэрхийлэх
-  if (scores[activePlayer] >= 20) {
+  if (scores[activePlayer] >= 100) {
     document.getElementById("name-" + activePlayer).textContent = "WINNER !!!";
     document
       .querySelector(".player-" + activePlayer + "-panel")
@@ -104,3 +104,8 @@ function switchToNextPlayer() {
 
   diceDom.style.display = "none";
 }
+
+// одоо new game товч дээр eventlistener ээрээ оруулья
+document.querySelector(".btn-new").addEventListener("click", function () {
+  alert("шинээр тоглоом эхлүүлэх гэж байна");
+});
