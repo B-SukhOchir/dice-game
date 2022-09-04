@@ -1,3 +1,5 @@
+//тоглоом дууссан эсэхийг хадгалах төлөвийн хувьсагч
+var isNewGame;
 // тоглоомын бүх гадар ашиглагдах хувьсагчдыг энд зарлая
 // аль тоглогч шоо шидэх вэ
 var activePlayer;
@@ -7,6 +9,8 @@ var scores;
 var roundscore;
 // тоглоомыг шинээр эхлэхэд бэлтгэнэ
 function initGame() {
+  // тоглоом шинээр эхэллээ гэдэгт төлөвт оруулна
+  isNewGame = true;
   // тоглогчийн ээлжийг хадгалах хувьсагч, нэгдүгээр тоглогчийг 0, хоёрдугаар тоглогчийг 1 гэж тэмдэглэе
   activePlayer = 0;
   // тоглогчийн цуглуулсан оноог хадгалах хувьсагч
@@ -47,51 +51,66 @@ var diceDom = window.document.querySelector(".dice");
 // шоог шидэх event listiner
 
 document.querySelector(".btn-roll").addEventListener("click", function () {
-  // 1-6 хүртэл санамсаргүй нэг тоог гаргаж авна
-  var diceNumber = Math.floor(Math.random() * 6) + 1;
+  if (isNewGame === true) {
+    // 1-6 хүртэл санамсаргүй нэг тоог гаргаж авна
+    var diceNumber = Math.floor(Math.random() * 6) + 1;
 
-  // шооны зургийг гаргаж ирнэ
-  diceDom.style.display = "block";
+    // шооны зургийг гаргаж ирнэ
+    diceDom.style.display = "block";
 
-  // буусан санамсаргүй тоонл харгалзах  шооны зургийг вэб дээр гаргаж ирнэ
-  diceDom.src = "dice-" + diceNumber + ".png";
+    // буусан санамсаргүй тоонл харгалзах  шооны зургийг вэб дээр гаргаж ирнэ
+    diceDom.src = "dice-" + diceNumber + ".png";
 
-  //Буусан тоо нь нэгээс ялгаатай бол идэвхитэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ
-  if (diceNumber !== 1) {
-    // 1 ээс ялгаатай  тоо буулаа Буусан тоог тоглогчийн оноо дээр нэмж өгнө
-    roundScore = roundScore + diceNumber;
-    document.getElementById("current-" + activePlayer).textContent = roundScore;
+    //Буусан тоо нь нэгээс ялгаатай бол идэвхитэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ
+    if (diceNumber !== 1) {
+      // 1 ээс ялгаатай  тоо буулаа Буусан тоог тоглогчийн оноо дээр нэмж өгнө
+      roundScore = roundScore + diceNumber;
+      document.getElementById("current-" + activePlayer).textContent =
+        roundScore;
+    } else {
+      // 1 буусан тул тоглогчийн ээлжийг энэ хэсэгт сольж өгнө
+      // хэрэв 1 буусан тохиолдолд энэ тоглогчийн оноог 0 болгонло
+      switchToNextPlayer();
+    }
   } else {
-    // 1 буусан тул тоглогчийн ээлжийг энэ хэсэгт сольж өгнө
-    // хэрэв 1 буусан тохиолдолд энэ тоглогчийн оноог 0 болгонло
-    switchToNextPlayer();
+    alert(
+      " Уучлаарай, тоглогч " +
+        (activePlayer + 1) +
+        " ялсан байна. New game товч дээр дарж тоглоомыг шинээр эхлэнэ үү"
+    );
   }
 });
 
 // hold товчны eventlistener
 document.querySelector(".btn-hold").addEventListener("click", function () {
-  //уг тоглогчийн цуглуулсан ээлжийн оноог нь глобаль оноон дээр нь нэмж өгнө.
-  scores[activePlayer] = scores[activePlayer] + roundScore;
-  // дэлгэц дээр оноог нь харуулна
-  document.getElementById("score-" + activePlayer).textContent =
-    scores[activePlayer];
-  //аль  тоглогч хожсоныг илэрхийлэх
-  if (scores[activePlayer] >= 10) {
-    document.getElementById("name-" + activePlayer).textContent = "WINNER !!!";
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.add("winner");
-    document
-      // winner гэсэн бичгийн арын active харуулсан улаан бичгийг арилгасан
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.remove("active");
+  if (isNewGame === true) {
+    //уг тоглогчийн цуглуулсан ээлжийн оноог нь глобаль оноон дээр нь нэмж өгнө.
+    scores[activePlayer] = scores[activePlayer] + roundScore;
+    // дэлгэц дээр оноог нь харуулна
+    document.getElementById("score-" + activePlayer).textContent =
+      scores[activePlayer];
+    //аль  тоглогч хожсоныг илэрхийлэх
+    if (scores[activePlayer] >= 10) {
+      //тоглоомыг дууссан төлөвт оруулна
+      isNewGame = false;
+      document.getElementById("name-" + activePlayer).textContent =
+        "WINNER !!!";
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.add("winner");
+      document
+        // winner гэсэн бичгийн арын active харуулсан улаан бичгийг арилгасан
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.remove("active");
+    } else {
+      // ээлжийн оноог нь 0 болгоно
+      // тоглогчийн ээлжийг сольно
+      switchToNextPlayer();
+    }
+    // дээрхи switchToNextPlayer() функцийг доор бичсэн байгаа
   } else {
-    // ээлжийн оноог нь 0 болгоно
-    // тоглогчийн ээлжийг сольно
-    switchToNextPlayer();
+    alert("Уучлаарай тоглоом дууссан байна");
   }
-
-  // дээрхи switchToNextPlayer() функцийг доор бичсэн байгаа
 });
 
 //  тоглогчдын ээлжийг шилжүүлнэ
