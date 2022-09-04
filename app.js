@@ -90,7 +90,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document.getElementById("score-" + activePlayer).textContent =
       scores[activePlayer];
     //аль  тоглогч хожсоныг илэрхийлэх
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= 100) {
       //тоглоомыг дууссан төлөвт оруулна
       isNewGame = false;
       document.getElementById("name-" + activePlayer).textContent =
