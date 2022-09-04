@@ -1,34 +1,37 @@
-// тоглогчийн ээлжийг хадгалах хувьсагч нэгдүгээр тоглогч 0, хоёрдугаар тоглогч 1
-var activePlayer = 0;
-
-// тоглогчийн оноог хадгалах хувьсагч
-var scores = [0, 0];
-
-//тоглогчийн ээлжиндээ цуглуулж байгааг хадгалах хуввсагч
-var roundScore = 0;
-
-// шооны аль талаараа буусныг хадгалах хувьсагч 1-6 гэсэн утгыг санамсаргүйгээр үүсгэж өгнө
-// 1-6 хүртэлхи тооноос тохиолдлын тоог гаргаж авья
-var diceNumber = Math.floor(Math.random() * 6) + 1;
-
-// <div class="player-score" id="score-0">43</div>
-// window dotorhi document iin querySelector oor html dotorhi yamr ng function iig holbono uun dotorhi textContent duudaj tuhain uguh gsen utgaa ugnu doorhi maygaar
-// одоо энд random аар гарч ирж байгаа утгаа харгалзуулж болно
-// Тоглогч-0
-// window.document.querySelector("#score-0").textContent = dice;
-// Тоглогч-1
-// window нь глобал хувьсагч учир заавал бичих шаардлагагүй
-// document.querySelector("#score-1").innerHTML = "<em><b>Yes</b></em>";
-
-// одоо шооны утга харуулсан зургийг style display руу ороод none утга өгөхөд алга болно
-
-// Програм эхлэхэд бэлтгэе хэрэв ID аар  нь файлыг сонгосон байвал querySelector ийн оронд getElelmentById ийг оруулж болно гэхдээ id нэрээ # гүйгээр бичнэ
-window.document.getElementById("score-0").textContent = 0;
-window.document.getElementById("score-1").textContent = 0;
-window.document.getElementById("current-0").textContent = 0;
-window.document.getElementById("current-1").textContent = 0;
-
-window.document.querySelector(".dice").style.display = "none";
+// тоглоомын бүх гадар ашиглагдах хувьсагчдыг энд зарлая
+// аль тоглогч шоо шидэх вэ
+var activePlayer;
+// хоёр тоглогчийн цуглуулсан оноонууд
+var scores;
+//  идэвхитэй тоглогчийн цуглуулж байгаа ээлжийн оноо
+var roundscore;
+// тоглоомыг шинээр эхлэхэд бэлтгэнэ
+function initGame() {
+  // тоглогчийн ээлжийг хадгалах хувьсагч, нэгдүгээр тоглогчийг 0, хоёрдугаар тоглогчийг 1 гэж тэмдэглэе
+  activePlayer = 0;
+  // тоглогчийн цуглуулсан оноог хадгалах хувьсагч
+  scores = [0, 0];
+  // тоглогчийн ээлжиндээ цуглуулж байгаа оноог хадгалах хувьсагч
+  roundScore = 0;
+  // шооны аль талаараа буусныг хадгалах хувьсагч хэрэгтэй, 1-6 хүртэлхи тоог санамсаргүйгээр үүсгэж байна
+  var diceNumber = Math.floor(Math.random() * 6) + 1;
+  // програм эхлэхэл бэлтгэе
+  window.document.getElementById("score-0").textContent = 0;
+  window.document.getElementById("score-1").textContent = 0;
+  window.document.getElementById("current-0").textContent = 0;
+  window.document.getElementById("current-1").textContent = 0;
+  // тоглоом эхлэхэд шооны зураг алга болно
+  window.document.querySelector(".dice").style.display = "none";
+  //тоглогчдын нэрийг буцааж гаргах
+  document.getElementById("name-0").textContent = "Player-1";
+  document.getElementById("name-1").textContent = "Player-2";
+  document.querySelector(".player-0-panel").classList.remove("winner");
+  document.querySelector(".player-1-panel").classList.remove("winner");
+  // тоглоом шинээр эхлэхэд нэгдүгээр тоглогч нь active төлөвт оруулах
+  document.querySelector(".player-0-panel").classList.add("active");
+}
+// Тоглоомын эхлэх төлөвт оруулья
+initGame();
 
 /*одоо доорхи дарааллаар явья
 1.Roll Dice товчийг DOM оос авна
@@ -73,7 +76,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
   document.getElementById("score-" + activePlayer).textContent =
     scores[activePlayer];
   //аль  тоглогч хожсоныг илэрхийлэх
-  if (scores[activePlayer] >= 100) {
+  if (scores[activePlayer] >= 10) {
     document.getElementById("name-" + activePlayer).textContent = "WINNER !!!";
     document
       .querySelector(".player-" + activePlayer + "-panel")
@@ -106,6 +109,4 @@ function switchToNextPlayer() {
 }
 
 // одоо new game товч дээр eventlistener ээрээ оруулья
-document.querySelector(".btn-new").addEventListener("click", function () {
-  alert("шинээр тоглоом эхлүүлэх гэж байна");
-});
+document.querySelector(".btn-new").addEventListener("click", initGame);
